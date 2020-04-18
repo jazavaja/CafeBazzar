@@ -1,9 +1,10 @@
-The technical documentation of CafeBazaar has been summarized and included in this repository
-##### Made By javadSarlak (teamtext group)
-#### for Usage
-##### Step 1 (gradle or maven)
+این کتابخونه ساده شده کتابخونه کافه بازار است که برای سادگی و سهولت افراد انجام شده اگر مشکلی در استفاده کتابخونه داشتید میتونید ایمیل کنید یا همینجا مطرح کنید ممنون :)
+### کتابخانه کافه بازار
+##### 
+#### راهنمای استفاده
+##### مرحله اول 
 ----------------------------
-##### if you use Gradle
+##### Gradle
  Add it in your root build.gradle at the end of repositories:
 
 ```java
@@ -15,7 +16,7 @@ allprojects {
 	}
 ```
 
-##### Step 2. Add the dependency
+##### در گردل ماژول
 
 ```java
 dependencies {
@@ -24,7 +25,7 @@ dependencies {
 	}
 ```
 ----------------------------------------------------
-##### if you use Maven
+##### Maven
 ##### Add the JitPack repository to your build file
 
 ```java
@@ -45,23 +46,35 @@ dependencies {
 	</dependency>
 ```
 ------------------------
-#### step 2
-add 2  permission below :
+#### مرحله دوم
+این دو پرمیشن رو به بخش منیفست برنامه خود اضافه کنید
 ```java
 <uses-permission android:name="com.farsitel.bazaar.permission.PAY_THROUGH_BAZAAR"></uses-permission>
     <uses-permission android:name="android.permission.INTERNET" />
 ```
-#### step 3 
-just create a new class Cafebazaar in your Activity (CafeBazaar have 2 constructor )
+#### مرحله سوم
+ساخت کلاس کافه بازار طبق زیر
 ```java
 CafeBazaar c=new CafeBazaar(activity,base64);
 OR
 CafeBazaar c=new CafeBazaar(activity,base64,CafeBazzarInterface);
 
 ```
+activity : is your activity
+base64 : get from https://pishkhan.cafebazaar.ir/
+CafeBazzarInterface : interface set Custom Error When Cafebazaar setup 
+fail.or launch purchase fail....
+
+#### step 4
+اون قسمت که میخواهید درخواست پرداخت انجام شود مثل دکمه پرداخت
 
 
 
 
 
 
+
+
+
+
+~~
