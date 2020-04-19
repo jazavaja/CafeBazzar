@@ -21,7 +21,7 @@ allprojects {
 ```java
 dependencies {
 			...
-	        implementation 'com.github.jazavaja:CafeBazzar:1.0.0'
+	        	implementation 'com.github.jazavaja:CafeBazzar:1.4'
 	}
 ```
 ----------------------------------------------------
