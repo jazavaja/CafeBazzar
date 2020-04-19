@@ -1,6 +1,5 @@
 package com.teamtext.cafe;
 
-public interface CafeBazzarInterface{
+public interface CafeBazaarInterface {
     void ErrorSetupIabHelper(Exception error);
-    void ErrorLaunch();
 }
