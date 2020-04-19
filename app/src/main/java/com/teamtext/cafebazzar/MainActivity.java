@@ -5,12 +5,29 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.teamtext.cafe.CafeBazzar;
+import com.teamtext.cafe.CafeBazaar;
+import com.teamtext.cafe.CafeBazzarInterface;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CafeBazzar cafeBazzar=new CafeBazzar(this,"");
+        CafeBazaar bazaar=new CafeBazaar(this, "", new CafeBazzarInterface() {
+            @Override
+            public void ErrorSetupIabHelper(Exception error) {
+
+            }
+
+            @Override
+            public void ErrorLaunch() {
+
+            }
+        });
+        CafeBazaar cafeBazaar =new CafeBazaar(this,"");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

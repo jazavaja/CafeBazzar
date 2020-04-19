@@ -10,13 +10,13 @@ import com.teamtext.cafe.util.IabHelper;
 import com.teamtext.cafe.util.IabResult;
 import com.teamtext.cafe.util.Purchase;
 
-public class CafeBazzar implements Parcelable {
+public class CafeBazaar implements Parcelable {
 
     private Activity activity;
     private boolean isSetup = false;
     private IabHelper iabHelper;
     private CafeBazzarInterface cafeBazzarInterface;
-    public CafeBazzar(Activity activity,String base64) {
+    public CafeBazaar(Activity activity, String base64) {
         this.activity = activity;
         iabHelper = new IabHelper(activity, base64);
         try {
@@ -26,9 +26,10 @@ public class CafeBazzar implements Parcelable {
             e.printStackTrace();
         }
     }
-    CafeBazzar(Activity activity, String base64, CafeBazzarInterface cafeBazzarInterface) {
+    public CafeBazaar(Activity activity, String base64, CafeBazzarInterface cafeBazzarInterface) {
         this.activity = activity;
         this.cafeBazzarInterface=cafeBazzarInterface;
+        activity=new Activity();
         iabHelper = new IabHelper(activity, base64);
         try {
             setup();
@@ -38,23 +39,24 @@ public class CafeBazzar implements Parcelable {
         }
     }
 
-    protected CafeBazzar(Parcel in) {
+    private CafeBazaar(Parcel in) {
         isSetup = in.readByte() != 0;
     }
 
-    public static final Creator<CafeBazzar> CREATOR = new Creator<CafeBazzar>() {
+    public static final Creator<CafeBazaar> CREATOR = new Creator<CafeBazaar>() {
         @Override
-        public CafeBazzar createFromParcel(Parcel in) {
-            return new CafeBazzar(in);
+        public CafeBazaar createFromParcel(Parcel in) {
+            return new CafeBazaar(in);
         }
 
         @Override
-        public CafeBazzar[] newArray(int size) {
-            return new CafeBazzar[size];
+        public CafeBazaar[] newArray(int size) {
+            return new CafeBazaar[size];
         }
     };
 
-    public void setup() throws Exception {
+    private void setup() throws Exception
+    {
         iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             public void onIabSetupFinished(IabResult result) {
                 Log.d("TAG", "Setup finished.");
@@ -75,27 +77,29 @@ public class CafeBazzar implements Parcelable {
         if (iabHelper != null)
             iabHelper.dispose();
         iabHelper = null;
+
     }
 
-    public void launchWithErrorLaunch(Activity activity,String s, int requestCode, IabHelper.OnIabPurchaseFinishedListener listener,String extra) {
+    public void launchForPayWithErrorListener(Activity activity, String s, int requestCode, IabHelper.OnIabPurchaseFinishedListener listener) {
         if (isSetup)
         {
-            iabHelper.launchPurchaseFlow(activity, s, requestCode, listener,extra);
+
+            iabHelper.launchPurchaseFlow(activity, s, requestCode, listener,"developer-payload");
         }
         else
             cafeBazzarInterface.ErrorLaunch();
     }
-    public void launch(String s, int requestCode, IabHelper.OnIabPurchaseFinishedListener listener,String extra) {
+    public void launchForPay(String s, int requestCode, IabHelper.OnIabPurchaseFinishedListener listener) {
         if (isSetup){
-            iabHelper.launchPurchaseFlow(activity, s, requestCode, listener,extra);
+            iabHelper.launchPurchaseFlow(activity, s, requestCode, listener,"developer-payload");
         }
         else
-            Log.e("CafeBazzarError","NotSetup");
+            Log.e("CafeBazaarError","NotSetup");
     }
 
 
 
-    public void onActivityCafe(int requestCode, int resultCode, Intent data, OnResult onresult){
+    public void onActivityResultCafeBazaar(int requestCode, int resultCode, Intent data, OnResult onresult){
         if (!iabHelper.handleActivityResult(requestCode, resultCode, data))
         {
             onresult.OnResultCustom();
@@ -103,8 +107,17 @@ public class CafeBazzar implements Parcelable {
             Log.d("TAG", "onActivityResult handled by IABUtil.");
         }
     }
+    public void onActivityResultCafeBazaar(Activity activity,int requestCode, int resultCode, Intent data){
+        if (!iabHelper.handleActivityResult(requestCode, resultCode, data))
+        {
+            Intent intent=new Intent(activity,activity.getClass());
+            activity.startActivityForResult(intent,requestCode);
+        } else {
+            Log.d("TAG", "onActivityResult handled by IABUtil.");
+        }
+    }
 
-    public void consumeAsync(Purchase purchase, IabHelper.OnConsumeFinishedListener finishedListener){
+    public void consumeProduct(Purchase purchase, IabHelper.OnConsumeFinishedListener finishedListener){
         iabHelper.consumeAsync(purchase,finishedListener);
     }
     @Override
@@ -113,8 +126,8 @@ public class CafeBazzar implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
+    public void writeToParcel(Parcel parcel, int i)
+    {
         parcel.writeByte((byte) (isSetup ? 1 : 0));
     }
 
